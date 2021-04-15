@@ -1,0 +1,80 @@
+cqlsh:employee> create table employee_info(emp_id int, emp_name text, designation text, date_of_joining date, salary int, dept_name text, primary key(emp_id));
+cqlsh:employee> 
+cqlsh:employee> begin batch INSERT INTO employee_info(emp_id, emp_name, designation, date_of_joining, salary, dept_name) values (1, 'Akshay', 'Dev', '2021-02-20', 694200, 'Web') insert into employee_info(emp_id, emp_name, designation, date_of_joining, salary, dept_name) values (2, 'KP', 'Dev', '2021-03-01', 654793, 'RnD') apply batch;
+cqlsh:employee> 
+cqlsh:employee> begin batch INSERT INTO employee_info(emp_id, emp_name, designation, date_of_joining, salary, dept_name) values (3, 'Harsh', 'Dev', '2021-03-01', 694201, 'Web') insert into employee_info(emp_id, emp_name, designation, date_of_joining, salary, dept_name) values (121, 'Karthik', 'Data Scientist', '2021-03-01', 946200, 'Research') apply batch;
+cqlsh:employee> UPDATE employee_info set emp_name = 'Kutty', dept_name = 'BT' WHERE emp_id = 121;
+cqlsh:employee> 
+cqlsh:employee> SELECT * FROM employee_info 
+            ... ;
+
+ emp_id | date_of_joining | dept_name | designation    | emp_name | salary
+--------+-----------------+-----------+----------------+----------+--------
+      1 |      2021-02-20 |       Web |            Dev |   Akshay | 694200
+      2 |      2021-03-01 |       RnD |            Dev |       KP | 654793
+    121 |      2021-03-01 |        BT | Data Scientist |    Kutty | 946200
+      3 |      2021-03-01 |       Web |            Dev |    Harsh | 694201
+
+(4 rows)
+cqlsh:employee> ALTER TABLE employee_info ADD Projects list<text >;
+cqlsh:employee> SELECT * FROM employee_info  ;
+
+ emp_id | date_of_joining | dept_name | designation    | emp_name | projects | salary
+--------+-----------------+-----------+----------------+----------+----------+--------
+      1 |      2021-02-20 |       Web |            Dev |   Akshay |     null | 694200
+      2 |      2021-03-01 |       RnD |            Dev |       KP |     null | 654793
+    121 |      2021-03-01 |        BT | Data Scientist |    Kutty |     null | 946200
+      3 |      2021-03-01 |       Web |            Dev |    Harsh |     null | 694201
+
+(4 rows)
+cqlsh:employee> update employee_info SET projects=['DaNoTate'] WHERE emp_id = 1;
+cqlsh:employee> SELECT * FROM employee_info  ;
+
+ emp_id | date_of_joining | dept_name | designation    | emp_name | projects     | salary
+--------+-----------------+-----------+----------------+----------+--------------+--------
+      1 |      2021-02-20 |       Web |            Dev |   Akshay | ['DaNoTate'] | 694200
+      2 |      2021-03-01 |       RnD |            Dev |       KP |         null | 654793
+    121 |      2021-03-01 |        BT | Data Scientist |    Kutty |         null | 946200
+      3 |      2021-03-01 |       Web |            Dev |    Harsh |         null | 694201
+
+(4 rows)
+cqlsh:employee> update employee_info SET projects=['XCode'] WHERE emp_id = 2;
+cqlsh:employee> update employee_info SET projects=['XCode'] WHERE emp_id = 121;
+cqlsh:employee> update employee_info SET projects=['ProjX'] WHERE emp_id = 3;
+cqlsh:employee> SELECT * FROM employee_info  ;
+
+ emp_id | date_of_joining | dept_name | designation    | emp_name | projects     | salary
+--------+-----------------+-----------+----------------+----------+--------------+--------
+      1 |      2021-02-20 |       Web |            Dev |   Akshay | ['DaNoTate'] | 694200
+      2 |      2021-03-01 |       RnD |            Dev |       KP |    ['XCode'] | 654793
+    121 |      2021-03-01 |        BT | Data Scientist |    Kutty |    ['XCode'] | 946200
+      3 |      2021-03-01 |       Web |            Dev |    Harsh |    ['ProjX'] | 694201
+
+(4 rows)
+cqlsh:employee> insert into employee_info(emp_id, emp_name, designation, date_of_joining, salary, dept_name) values (4, 'Harsh', 'Dev', '2021-03-01', 694201, 'Web') USING TTL 15;
+cqlsh:employee> SELECT * FROM employee_info  ;
+
+ emp_id | date_of_joining | dept_name | designation    | emp_name | projects     | salary
+--------+-----------------+-----------+----------------+----------+--------------+--------
+      1 |      2021-02-20 |       Web |            Dev |   Akshay | ['DaNoTate'] | 694200
+      2 |      2021-03-01 |       RnD |            Dev |       KP |    ['XCode'] | 654793
+      4 |      2021-03-01 |       Web |            Dev |    Harsh |         null | 694201
+    121 |      2021-03-01 |        BT | Data Scientist |    Kutty |    ['XCode'] | 946200
+      3 |      2021-03-01 |       Web |            Dev |    Harsh |    ['ProjX'] | 694201
+
+(5 rows)
+cqlsh:employee> select ttl(emp_name) from employee_info where emp_id = 4;
+
+ ttl(emp_name)
+---------------
+              9
+cqlsh:employee> SELECT * FROM employee_info  ;
+
+ emp_id | date_of_joining | dept_name | designation    | emp_name | projects     | salary
+--------+-----------------+-----------+----------------+----------+--------------+--------
+      1 |      2021-02-20 |       Web |            Dev |   Akshay | ['DaNoTate'] | 694200
+      2 |      2021-03-01 |       RnD |            Dev |       KP |    ['XCode'] | 654793
+    121 |      2021-03-01 |        BT | Data Scientist |    Kutty |    ['XCode'] | 946200
+      3 |      2021-03-01 |       Web |            Dev |    Harsh |    ['ProjX'] | 694201
+
+(4 rows)
