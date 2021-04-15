@@ -1,0 +1,286 @@
+Microsoft Windows [Version 10.0.19042.867]
+(c) 2020 Microsoft Corporation. All rights reserved.
+
+C:\Program Files\MongoDB\Server\4.4\bin>mongo
+MongoDB shell version v4.4.5
+connecting to: mongodb://127.0.0.1:27017/?compressors=disabled&gssapiServiceName=mongodb
+Implicit session: session { "id" : UUID("3bbef5d3-ae49-4248-b786-dc0f058deb24") }
+MongoDB server version: 4.4.5
+Welcome to the MongoDB shell.
+For interactive help, type "help".
+For more comprehensive documentation, see
+        https://docs.mongodb.com/
+Questions? Try the MongoDB Developer Community Forums
+        https://community.mongodb.com
+---
+The server generated these startup warnings when booting:
+        2021-04-15T14:56:12.318+05:30: Access control is not enabled for the database. Read and write access to data and configuration is unrestricted
+---
+---
+        Enable MongoDB's free cloud-based monitoring service, which will then receive and display
+        metrics about your deployment (disk utilization, CPU, operation statistics, etc).
+
+        The monitoring data will be available on a MongoDB website with a unique URL accessible to you
+        and anyone you share the URL with. MongoDB may use this information to make product
+        improvements and to suggest MongoDB products and deployment options to you.
+
+        To enable free monitoring, run the following command: db.enableFreeMonitoring()
+        To permanently disable this reminder, run the following command: db.disableFreeMonitoring()
+---
+> db
+test
+> show databases
+admin   0.000GB
+asd     0.000GB
+config  0.000GB
+local   0.000GB
+> use asd
+switched to db asd
+> db.createCollection("stud")
+{ "ok" : 1 }
+> db.stud.drop
+function(options = {}) {
+    const cmdObj = Object.assign({drop: this.getName()}, options);
+    ret = this._db.runCommand(cmdObj);
+    if (!ret.ok) {
+        if (ret.errmsg == "ns not found")
+            return false;
+        throw _getErrorWithCode(ret, "drop failed: " + tojson(ret));
+    }
+    return true;
+}
+> db.stud.drop()
+true
+> db.createcollection("stud")
+uncaught exception: TypeError: db.createcollection is not a function :
+@(shell):1:1
+> db.createCollection("stud")
+{ "ok" : 1 }
+> db.stud.insert({id:1,studName:"alicecooper",Grade:"IX",hobbies:"eating"});
+WriteResult({ "nInserted" : 1 })
+> db.stud.find({id:1})
+{ "_id" : ObjectId("60780ba16aab25b9e16504ff"), "id" : 1, "studName" : "alicecooper", "Grade" : "IX", "hobbies" : "eating" }
+> use college
+switched to db college
+> db.stud.insert({id:1,studName:"alicecooper",Grade:"IX",hobbies:"eating"});
+WriteResult({ "nInserted" : 1 })
+> db.stud.delete({id:1})
+uncaught exception: TypeError: db.stud.delete is not a function :
+@(shell):1:1
+> db.stud.drop({id:1})
+true
+> db.stud.insertMany(
+... {
+...  id:1,
+... "name":Eivor,
+... "class": 2,
+... "branch":"cse",
+... age:21,
+... disabled:"yes"
+... }
+... )
+uncaught exception: ReferenceError: Eivor is not defined :
+@(shell):4:1
+> db.stud.insertMany( {  id:1, "name":"Eivor", "class": 2, "branch":"cse", age:21, disabled:"yes" } )
+uncaught exception: TypeError: documents.map is not a function :
+DBCollection.prototype.insertMany@src/mongo/shell/crud_api.js:307:17
+@(shell):1:1
+> db.stud.insert( {  id:1, "name":"Eivor", "class": 2, "branch":"cse", age:21, disabled:"yes" } )
+WriteResult({ "nInserted" : 1 })
+> db.stud.find({id:1});
+{ "_id" : ObjectId("60780ec06aab25b9e1650501"), "id" : 1, "name" : "Eivor", "class" : 2, "branch" : "cse", "age" : 21, "disabled" : "yes" }
+> db.stud.insert( {  id:2, "name":"Alexios", "class": 1, "branch":"ise", age:23, disabled:"no" } )
+WriteResult({ "nInserted" : 1 })
+> db.stud.drop({name:"Kassandra"});
+true
+> db.stud.insert( {  id:3, "name":"Kassabdra", "class": 3, "branch":"ece", age:27, disabled:"no" } )
+WriteResult({ "nInserted" : 1 })
+> db.stud.insert( {  id:3, "name":"Ezio", "class": 4, "branch":"me", age:19, disabled:"yes" } )
+WriteResult({ "nInserted" : 1 })
+> db.stud.update({name:"ezio"},{$set:{id:4}});
+WriteResult({ "nMatched" : 0, "nUpserted" : 0, "nModified" : 0 })
+> db.stud.update({name:"Ezio"},{$set:{id:4}});
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.stud.insert( {  id:1, "name":"Eivor", "class": 2, "branch":"cse", age:21, disabled:"yes" } )
+WriteResult({ "nInserted" : 1 })
+> db.stud.insert( {  id:2, "name":"Alexios", "class": 1, "branch":"ise", age:23, disabled:"no" } )
+WriteResult({ "nInserted" : 1 })
+> db.faculty.insert({id:101,name:"altair",branch:"ise",age:32,designation:"janitorial",disabled:"no"})
+WriteResult({ "nInserted" : 1 })
+> db.faculty.insert({id:102,name:"Kenway",branch:"ece",age:35,designation:"invigilator",disabled:"no"})
+WriteResult({ "nInserted" : 1 })
+> db.faculty.insert({id:103,name:"Arthur",branch:"te",age:35,designation:"invigilator",disabled:"no"})
+WriteResult({ "nInserted" : 1 })
+> db.faculty.insert({id:104,name:"Dutch",branch:"bio",age:43,designation:"professor",disabled:"yes"})
+WriteResult({ "nInserted" : 1 })
+> db.coe.insert({id:201,name:"Micah",branch:"cse",age:43,designation:"coe",disabled:"yes"})
+WriteResult({ "nInserted" : 1 })
+> db.coe.insert({id:202,name:"Brandon",branch:"cse",age:45,designation:"Asst coe",disabled:"yes"})
+WriteResult({ "nInserted" : 1 })
+> db.coe.insert({id:202,name:"Mark",branch:"te",age:48,designation:"Examiner",disabled:"no"})
+WriteResult({ "nInserted" : 1 })
+> db.coe.insert({id:204,name:"Jacques",branch:"me",age:51,designation:"Examiner",disabled:"yes"})
+WriteResult({ "nInserted" : 1 })
+> db.coe.update({name:"Mark"},{$set:{id:203}});
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> show collections;
+coe
+faculty
+stud
+> show coe;
+uncaught exception: Error: don't know how to show [coe] :
+shellHelper.show@src/mongo/shell/utils.js:1191:11
+shellHelper@src/mongo/shell/utils.js:819:15
+@(shellhelp2):1:1
+> db.coe.display()
+uncaught exception: TypeError: db.coe.display is not a function :
+@(shell):1:1
+>
+> db.coe.find()
+{ "_id" : ObjectId("607813536aab25b9e165050b"), "id" : 201, "name" : "Micah", "branch" : "cse", "age" : 43, "designation" : "coe", "disabled" : "yes" }
+{ "_id" : ObjectId("607813756aab25b9e165050c"), "id" : 202, "name" : "Brandon", "branch" : "cse", "age" : 45, "designation" : "Asst coe", "disabled" : "yes" }
+{ "_id" : ObjectId("607813906aab25b9e165050d"), "id" : 203, "name" : "Mark", "branch" : "te", "age" : 48, "designation" : "Examiner", "disabled" : "no" }
+{ "_id" : ObjectId("607813bd6aab25b9e165050e"), "id" : 204, "name" : "Jacques", "branch" : "me", "age" : 51, "designation" : "Examiner", "disabled" : "yes" }
+> db.library.insert({id:276382,name:"Bible",pages:"500",author:"NA",genre:"religion",available:"yes"})
+WriteResult({ "nInserted" : 1 })
+> db.library.insert({id:847382,name"Inferno",pages:"180",author:"Dante Alighieri",genre:"Philosophy",available:"yes"})
+uncaught exception: SyntaxError: missing : after property id :
+@(shell):1:33
+> db.library.insert({id:847382,name:"Inferno",pages:"180",author:"Dante Alighieri",genre:"Philosophy",available:"yes"})
+WriteResult({ "nInserted" : 1 })
+> db.library.insert({id:843467,name"The Intruder",pages:"210",author:"KA Applegate",genre:"Fiction",available:"no"})
+uncaught exception: SyntaxError: missing : after property id :
+@(shell):1:33
+> db.library.insert({id:843467,name:"The Intruder",pages:"210",author:"KA Applegate",genre:"Fiction",available:"no"})
+WriteResult({ "nInserted" : 1 })
+> db.library.insert({id:843467,name:"The Pretender",pages:"210",author:"KA Applegate",genre:"Fiction",available:"no"})
+WriteResult({ "nInserted" : 1 })
+> db.library.insert({month:"March 20",name:"Science Exhibition",location:"new Building",branch in charge:"ece",coordinator:"morgan",sponsored:"no"})
+uncaught exception: SyntaxError: missing : after property id :
+@(shell):1:93
+> db.library.insert({month:"March 20",name:"Science Exhibition",location:"new Building",branch_in_charge:"ece",coordinator:"morgan",sponsored:"no"})
+WriteResult({ "nInserted" : 1 })
+> db.library.insert({month:"April 20",name:"Utsav",location:"Bmsce campus",branch_in_charge:"ise",coordinator:"dileep",sponsored:"yes"})
+WriteResult({ "nInserted" : 1 })
+> db.library.insert({month:"May 21",name:"FoodFight",location:"pg blockk",branch_in_charge:"me",coordinator:"alex",sponsored:"no"})
+WriteResult({ "nInserted" : 1 })
+> db.library.insert({month:"September 21",name:"Phase Shift",location:"new building",branch_in_charge:"NA",coordinator:"Milind",sponsored:"yes"})
+WriteResult({ "nInserted" : 1 })
+> db.festival.insert({month:"March 20",name:"Science Exhibition",location:"new Building",branch_in_charge:"ece",coordinator:"morgan",sponsored:"no"})
+WriteResult({ "nInserted" : 1 })
+> db.festival.insert({month:"April 20",name:"Utsav",location:"Bmsce campus",branch_in_charge:"ise",coordinator:"dileep",sponsored:"yes"})
+WriteResult({ "nInserted" : 1 })
+> db.festival.insert({month:"April 20",name:"Utsav",location:"Bmsce campus",branch_in_charge:"ise",coordinator:"dileep",sponsored:"yes"})
+WriteResult({ "nInserted" : 1 })
+> db.festival.insert({month:"September 21",name:"Phase Shift",location:"new building",branch_in_charge:"NA",coordinator:"Milind",sponsored:"yes"})
+WriteResult({ "nInserted" : 1 })
+> db.festival.insert({month:"May 21",name:"FoodFight",location:"pg blockk",branch_in_charge:"me",coordinator:"alex",sponsored:"no"})
+WriteResult({ "nInserted" : 1 })
+> db.library.drop({month:March 20"})
+uncaught exception: SyntaxError: missing } after property list :
+@(shell):1:29
+> db.library.drop({month:"March 20"})
+true
+> db.library.drop({month:"April 20"})
+false
+> db.library.drop({month:"May 21"})
+false
+> db.library.drop({month:"September 21"})
+false
+> ^C
+bye
+
+C:\Program Files\MongoDB\Server\4.4\bin> db.library.insert({id:276382,name:"Bible",pages:"500",author:"NA",genre:"religion",available:"yes"})
+'db.library.insert' is not recognized as an internal or external command,
+operable program or batch file.
+
+C:\Program Files\MongoDB\Server\4.4\bin>
+C:\Program Files\MongoDB\Server\4.4\bin>mongo
+MongoDB shell version v4.4.5
+connecting to: mongodb://127.0.0.1:27017/?compressors=disabled&gssapiServiceName=mongodb
+Implicit session: session { "id" : UUID("c349d7a1-4280-4d81-88b9-2565ae6ca337") }
+MongoDB server version: 4.4.5
+---
+The server generated these startup warnings when booting:
+        2021-04-15T14:56:12.318+05:30: Access control is not enabled for the database. Read and write access to data and configuration is unrestricted
+---
+---
+        Enable MongoDB's free cloud-based monitoring service, which will then receive and display
+        metrics about your deployment (disk utilization, CPU, operation statistics, etc).
+
+        The monitoring data will be available on a MongoDB website with a unique URL accessible to you
+        and anyone you share the URL with. MongoDB may use this information to make product
+        improvements and to suggest MongoDB products and deployment options to you.
+
+        To enable free monitoring, run the following command: db.enableFreeMonitoring()
+        To permanently disable this reminder, run the following command: db.disableFreeMonitoring()
+---
+> use college;
+switched to db college
+>
+>
+>
+>
+> use college
+switched to db college
+>
+> v^C
+bye
+
+C:\Program Files\MongoDB\Server\4.4\bin>mongo
+MongoDB shell version v4.4.5
+connecting to: mongodb://127.0.0.1:27017/?compressors=disabled&gssapiServiceName=mongodb
+Implicit session: session { "id" : UUID("4ad2e722-b338-496e-a82d-c69a79e9e9eb") }
+MongoDB server version: 4.4.5
+---
+The server generated these startup warnings when booting:
+        2021-04-15T14:56:12.318+05:30: Access control is not enabled for the database. Read and write access to data and configuration is unrestricted
+---
+---
+        Enable MongoDB's free cloud-based monitoring service, which will then receive and display
+        metrics about your deployment (disk utilization, CPU, operation statistics, etc).
+
+        The monitoring data will be available on a MongoDB website with a unique URL accessible to you
+        and anyone you share the URL with. MongoDB may use this information to make product
+        improvements and to suggest MongoDB products and deployment options to you.
+
+        To enable free monitoring, run the following command: db.enableFreeMonitoring()
+        To permanently disable this reminder, run the following command: db.disableFreeMonitoring()
+---
+> use college
+switched to db college
+> db.library.insert({id:293945,name:"Bible",pages:500,author:"NA",Genre:"religion",available:"yes"})
+WriteResult({ "nInserted" : 1 })
+> db.library.insert({id:293945,name:"Inferno",pages:150,author:"Dante Alighieri",Genre:"philosophy",available:"no"})
+WriteResult({ "nInserted" : 1 })
+> db.library.insert({id:532467,name:"The Intruder",pages:210,author:"KA Applegate",Genre:"fiction",available:"no"})
+WriteResult({ "nInserted" : 1 })
+> db.library.insert({id:532467,name:"The Pretender",pages:210,author:"KA Applegate",Genre:"fiction",available:"yes"})
+WriteResult({ "nInserted" : 1 })
+> db.stud.find()
+{ "_id" : ObjectId("60780f636aab25b9e1650503"), "id" : 3, "name" : "Kassabdra", "class" : 3, "branch" : "ece", "age" : 27, "disabled" : "no" }
+{ "_id" : ObjectId("60780f886aab25b9e1650504"), "id" : 4, "name" : "Ezio", "class" : 4, "branch" : "me", "age" : 19, "disabled" : "yes" }
+{ "_id" : ObjectId("607810706aab25b9e1650505"), "id" : 1, "name" : "Eivor", "class" : 2, "branch" : "cse", "age" : 21, "disabled" : "yes" }
+{ "_id" : ObjectId("607810766aab25b9e1650506"), "id" : 2, "name" : "Alexios", "class" : 1, "branch" : "ise", "age" : 23, "disabled" : "no" }
+> db.faculty.find()
+{ "_id" : ObjectId("607811ab6aab25b9e1650507"), "id" : 101, "name" : "altair", "branch" : "ise", "age" : 32, "designation" : "janitorial", "disabled" : "no" }
+{ "_id" : ObjectId("607811db6aab25b9e1650508"), "id" : 102, "name" : "Kenway", "branch" : "ece", "age" : 35, "designation" : "invigilator", "disabled" : "no" }
+{ "_id" : ObjectId("607812456aab25b9e1650509"), "id" : 103, "name" : "Arthur", "branch" : "te", "age" : 35, "designation" : "invigilator", "disabled" : "no" }
+{ "_id" : ObjectId("607812656aab25b9e165050a"), "id" : 104, "name" : "Dutch", "branch" : "bio", "age" : 43, "designation" : "professor", "disabled" : "yes" }
+> db.coe.find()
+{ "_id" : ObjectId("607813536aab25b9e165050b"), "id" : 201, "name" : "Micah", "branch" : "cse", "age" : 43, "designation" : "coe", "disabled" : "yes" }
+{ "_id" : ObjectId("607813756aab25b9e165050c"), "id" : 202, "name" : "Brandon", "branch" : "cse", "age" : 45, "designation" : "Asst coe", "disabled" : "yes" }
+{ "_id" : ObjectId("607813906aab25b9e165050d"), "id" : 203, "name" : "Mark", "branch" : "te", "age" : 48, "designation" : "Examiner", "disabled" : "no" }
+{ "_id" : ObjectId("607813bd6aab25b9e165050e"), "id" : 204, "name" : "Jacques", "branch" : "me", "age" : 51, "designation" : "Examiner", "disabled" : "yes" }
+> db.library.find()
+{ "_id" : ObjectId("60781bb9082c87639037ebed"), "id" : 293945, "name" : "Bible", "pages" : 500, "author" : "NA", "Genre" : "religion", "available" : "yes" }
+{ "_id" : ObjectId("60781bdc082c87639037ebee"), "id" : 293945, "name" : "Inferno", "pages" : 150, "author" : "Dante Alighieri", "Genre" : "philosophy", "available" : "no" }
+{ "_id" : ObjectId("60781c02082c87639037ebef"), "id" : 532467, "name" : "The Intruder", "pages" : 210, "author" : "KA Applegate", "Genre" : "fiction", "available" : "no" }
+{ "_id" : ObjectId("60781c14082c87639037ebf0"), "id" : 532467, "name" : "The Pretender", "pages" : 210, "author" : "KA Applegate", "Genre" : "fiction", "available" : "yes" }
+> db.festival.find()
+{ "_id" : ObjectId("607819406aab25b9e1650517"), "month" : "March 20", "name" : "Science Exhibition", "location" : "new Building", "branch_in_charge" : "ece", "coordinator" : "morgan", "sponsored" : "no" }
+{ "_id" : ObjectId("607819526aab25b9e1650518"), "month" : "April 20", "name" : "Utsav", "location" : "Bmsce campus", "branch_in_charge" : "ise", "coordinator" : "dileep", "sponsored" : "yes" }
+{ "_id" : ObjectId("607819566aab25b9e1650519"), "month" : "April 20", "name" : "Utsav", "location" : "Bmsce campus", "branch_in_charge" : "ise", "coordinator" : "dileep", "sponsored" : "yes" }
+{ "_id" : ObjectId("607819846aab25b9e165051a"), "month" : "September 21", "name" : "Phase Shift", "location" : "new building", "branch_in_charge" : "NA", "coordinator" : "Milind", "sponsored" : "yes" }
+{ "_id" : ObjectId("607819946aab25b9e165051b"), "month" : "May 21", "name" : "FoodFight", "location" : "pg blockk", "branch_in_charge" : "me", "coordinator" : "alex", "sponsored" : "no" }
+>
