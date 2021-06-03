@@ -1,0 +1,132 @@
+
+C:\WINDOWS\system32>cd c:\spark
+
+c:\spark>spark-shell
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+Spark context Web UI available at http://LAPTOP-8LN5NES7:4040
+Spark context available as 'sc' (master = local[*], app id = local-1622713138517).
+Spark session available as 'spark'.
+Welcome to
+      ____              __
+     / __/__  ___ _____/ /__
+    _\ \/ _ \/ _ `/ __/  '_/
+   /___/ .__/\_,_/_/ /_/\_\   version 3.1.1
+      /_/
+
+Using Scala version 2.12.10 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0_291)
+Type in expressions to have them evaluated.
+Type :help for more information.
+
+scala> val dataFile=sc.textFile("C:\everest.txt")
+<console>:1: error: invalid escape character
+       val dataFile=sc.textFile("C:\everest.txt")
+                                    ^
+
+scala> val dataFile=sc.textFile("C:/everest.txt")
+dataFile: org.apache.spark.rdd.RDD[String] = C:/everest.txt MapPartitionsRDD[1] at textFile at <console>:24
+
+scala> dataFile.count()
+res0: Long = 1
+
+scala> val everest=sc.textFile("C:/everest.txt")
+everest: org.apache.spark.rdd.RDD[String] = C:/everest.txt MapPartitionsRDD[3] at textFile at <console>:24
+
+scala>  val words = everest.map(x => x.split(" "))
+words: org.apache.spark.rdd.RDD[Array[String]] = MapPartitionsRDD[4] at map at <console>:25
+
+scala> words
+res1: org.apache.spark.rdd.RDD[Array[String]] = MapPartitionsRDD[4] at map at <console>:25
+
+scala> words.collect()
+res2: Array[Array[String]] = Array(Array(Mount, Everest, (Nepali:, Sagarmatha, ???????;, Tibetan:, Chomolungma, ???????????;, Chinese, Zhumulangma, ????), is, Earth's, highest, mountain, above, sea, level,, located, in, the, Mahalangur, Himal, sub-range, of, the, Himalayas., The, international, border, between, Nepal, (Province, No., 1), and, China, (Tibet, Autonomous, Region), runs, across, its, summit, point., -, Reference, Wikipedia))
+
+scala> words.count()
+res3: Long = 1
+
+scala> words.length()
+<console>:26: error: value length is not a member of org.apache.spark.rdd.RDD[Array[String]]
+       words.length()
+             ^
+
+scala> words.length.collect()
+<console>:26: error: value length is not a member of org.apache.spark.rdd.RDD[Array[String]]
+       words.length.collect()
+             ^
+
+scala> everest.map(x=>x.split("").size).collect()
+res6: Array[Int] = Array(351)
+
+scala> everest.map(x=>x.split("").length).collect()
+res7: Array[Int] = Array(351)
+
+scala> everest.map(x => x.length).collect()
+res8: Array[Int] = Array(351)
+
+scala> everest.map(x => x.toUpperCase).collect()
+res9: Array[String] = Array(MOUNT EVEREST (NEPALI: SAGARMATHA ???????; TIBETAN: CHOMOLUNGMA ???????????; CHINESE ZHUMULANGMA ????) IS EARTH'S HIGHEST MOUNTAIN ABOVE SEA LEVEL, LOCATED IN THE MAHALANGUR HIMAL SUB-RANGE OF THE HIMALAYAS. THE INTERNATIONAL BORDER BETWEEN NEPAL (PROVINCE NO. 1) AND CHINA (TIBET AUTONOMOUS REGION) RUNS ACROSS ITS SUMMIT POINT. - REFERENCE WIKIPEDIA)
+
+scala> val flat=sc.parallelize(Seq("I eat meat","I eat veg"))
+flat: org.apache.spark.rdd.RDD[String] = ParallelCollectionRDD[9] at parallelize at <console>:24
+
+
+
+scala> flat.flatMap(x=>x.split(" ").collect
+     | flat.flatMap(x=>x.split(" ").collect
+<console>:2: error: ')' expected but '.' found.
+       flat.flatMap(x=>x.split(" ").collect
+           ^
+
+scala> flat.collect
+<console>:24: error: not found: value flat
+       flat.collect
+       ^
+
+scala> val flat=sc.parallelize(Seq("I eat meat","I eat veg"))
+flat: org.apache.spark.rdd.RDD[String] = ParallelCollectionRDD[0] at parallelize at <console>:24
+
+scala> flat.collect
+res1: Array[String] = Array(I eat meat, I eat veg)
+
+scala> flat.flatMap(x=>x.split(" ").collect
+     |
+     |
+You typed two blank lines.  Starting a new command.
+
+scala>  val rdd1 = sc.parallelize(List("apple","orange","grapes","mango","orange"))
+rdd1: org.apache.spark.rdd.RDD[String] = ParallelCollectionRDD[1] at parallelize at <console>:24
+
+scala> val rdd2 = sc.parallelize(List("red","green","yellow"))
+rdd2: org.apache.spark.rdd.RDD[String] = ParallelCollectionRDD[2] at parallelize at <console>:24
+
+scala> rdd1.union(rdd2).collect
+res2: Array[String] = Array(apple, orange, grapes, mango, orange, red, green, yellow)
+
+scala> rdd1.intersection(rdd2).collect
+res3: Array[String] = Array()
+
+scala>  val rdd = sc.parallelize(1 to 15).collect
+rdd: Array[Int] = Array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15)
+
+scala> val rdd = sc.parallelize(1 to 15).reduce(_ + _)
+rdd: Int = 120
+
+scala>  sc.parallelize(1 to 20, 4).collect
+res4: Array[Int] = Array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20)
+
+scala> sc.parallelize(1 to 20, 4).first
+res5: Int = 1
+
+scala> sc.parallelize(1 to 20, 4).takeSample(false,4)
+res6: Array[Int] = Array(12, 20, 1, 3)
+
+scala> sc.parallelize(Array("Apple","Banana","Grapes","Oranges","Grapes","Banana")).saveAsTextFile("sampleFruits.txt")
+
+scala>
+
+scala> sc.parallelize(Array("Apple","Banana","Grapes","Oranges","Grapes","Banana")).saveAsTextFile("C:\sampleFruits.txt")
+<console>:1: error: invalid escape character
+       sc.parallelize(Array("Apple","Banana","Grapes","Oranges","Grapes","Banana")).saveAsTextFile("C:\sampleFruits.txt")
+                                                                                                       ^
+
+scala> sc.parallelize(Array("Apple","Banana","Grapes","Oranges","Grapes","Banana")).saveAsTextFile("C:/sampleFruits.txt")
